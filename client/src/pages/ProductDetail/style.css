@@ -112,3 +112,10 @@ h5 {
   border-radius: var(--border-radius);
   box-shadow: 1px 0px 8px rgba(0, 0, 0, 0.1);
 }
+.es_shipping_date {
+  display: flex;
+  color: #999;
+}
+.es_shipping_date > span {
+  margin-right: 0.5rem;
+}

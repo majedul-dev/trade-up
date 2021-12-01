@@ -68,7 +68,7 @@ const Chat = () => {
   return (
     <section className="chat container section">
       <div className="chat__conversations">
-        <div>All Convarsations</div>
+        <div>All Conversations</div>
         <ul className="chat--lists">
           {conversations.map((item) => (
             <div onClick={() => setCurrentChat(item)}>

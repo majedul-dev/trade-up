@@ -4,7 +4,7 @@ import "./styles.css";
 
 const categories = [
   "Electronics",
-  "vehicles",
+  "Vehicles",
   "Computers",
   "House",
   "Furnitures",

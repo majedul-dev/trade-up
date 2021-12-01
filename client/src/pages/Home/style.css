@@ -106,3 +106,6 @@
   color: rgb(131, 131, 131);
   text-decoration: none;
 }
+.categories__items > li {
+  text-transform: capitalize;
+}

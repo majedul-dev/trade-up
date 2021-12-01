@@ -14,7 +14,7 @@ const Post = ({ history }) => {
   const [name, setName] = useState("");
   const [exchangeWith, setExchangeWith] = useState("");
   const [exchangePrice, setExchangePrice] = useState(0);
-  const [estimatedShippingDay, setEstimatedShippingDay] = useState("");
+  const [shippingDate, setShippingDate] = useState("");
   const [description, setDescription] = useState("");
   const [addressOne, setAddressOne] = useState("");
   const [addressTwo, setAddressTwo] = useState("");
@@ -27,7 +27,8 @@ const Post = ({ history }) => {
     "vehicles",
     "Computers",
     "camera",
-    "House",
+    "Fashion & Beauty",
+    "Mobile",
     "Furnitures",
   ];
 
@@ -77,7 +78,7 @@ const Post = ({ history }) => {
     formData.set("name", name);
     formData.set("exchangeWith", exchangeWith);
     formData.set("exchangePrice", exchangePrice);
-    formData.set("estimatedShippingDay", estimatedShippingDay);
+    formData.set("shippingDate", shippingDate);
     formData.set("description", description);
     formData.set("addressOne", addressOne);
     formData.set("addressTwo", addressTwo);
@@ -151,9 +152,9 @@ const Post = ({ history }) => {
                 className="form-control"
                 type="date"
                 placeholder="Estimated days of shipping"
-                name="estimatedShippingDay"
-                value={estimatedShippingDay}
-                onChange={(e) => setEstimatedShippingDay(e.target.value)}
+                name="shippingDate"
+                value={shippingDate}
+                onChange={(e) => setShippingDate(e.target.value)}
               />
             </div>
             <div className="form-group">

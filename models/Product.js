@@ -29,12 +29,13 @@ const productScema = new Schema(
           "vehicles",
           "Computers",
           "camera",
-          "House",
+          "Fashion & Beauty",
+          "Mobile",
           "Furnitures",
         ],
       },
     },
-    estimatedShippingDay: {
+    shippingDate: {
       type: Date,
       required: [true, "Shipping date is required"],
     },

@@ -20,9 +20,7 @@ const EditProduct = ({ history }) => {
   const [name, setName] = useState(product.name);
   const [exchangeWith, setExchangeWith] = useState(product.exchangeWith);
   const [exchangePrice, setExchangePrice] = useState(product.exchangePrice);
-  const [estimatedShippingDay, setEstimatedShippingDay] = useState(
-    product.estimatedShippingDay
-  );
+  const [shippingDate, setShippingDate] = useState(product.shippingDate);
   const [description, setDescription] = useState(product.description);
   const [addressOne, setAddressOne] = useState(product.addressOne);
   const [addressTwo, setAddressTwo] = useState(product.addressTwo);
@@ -81,7 +79,7 @@ const EditProduct = ({ history }) => {
     formData.set("name", name);
     formData.set("exchangeWith", exchangeWith);
     formData.set("exchangePrice", exchangePrice);
-    formData.set("estimatedShippingDay", estimatedShippingDay);
+    formData.set("shippingDate", shippingDate);
     formData.set("description", description);
     formData.set("addressOne", addressOne);
     formData.set("addressTwo", addressTwo);
@@ -155,8 +153,8 @@ const EditProduct = ({ history }) => {
                 type="date"
                 placeholder="Estimated days of shipping"
                 name="estimatedShippingDay"
-                value={estimatedShippingDay}
-                onChange={(e) => setEstimatedShippingDay(e.target.value)}
+                value={shippingDate}
+                onChange={(e) => setShippingDate(e.target.value)}
               />
             </div>
             <div className="form-group">

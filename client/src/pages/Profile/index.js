@@ -30,7 +30,7 @@ const Profile = () => {
           </div>
         </div>
         <div className="col-md-8">
-          <h3>Your all AD</h3>
+          <h3>Your All Ads</h3>
           {!loading && products.length === 0 && (
             <h2 className="display-2 text-muted mt-5">
               You have no Exchanges!

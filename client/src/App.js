@@ -18,6 +18,8 @@ import store from "./store";
 import Offers from "./pages/Offers";
 import OfferDetail from "./pages/OfferDetail";
 import MyOfferDetails from "./pages/MyOfferDetails";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 function App() {
   useEffect(() => {
@@ -46,6 +48,8 @@ function App() {
           <Route path="/offers" component={Offers} />
           <Route path="/offer/my/:id" component={MyOfferDetails} />
           <Route path="/offer/:id" component={OfferDetail} />
+          <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
         </Switch>
       </div>
       <Footer />

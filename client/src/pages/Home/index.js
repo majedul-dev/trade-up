@@ -11,6 +11,7 @@ import {
 } from "../../actions/productActions";
 import Loader from "../../components/Loader";
 import Pagination from "react-js-pagination";
+import { Banner } from "../../components";
 
 const Home = ({ match }) => {
   const dispatch = useDispatch();
@@ -24,7 +25,8 @@ const Home = ({ match }) => {
     "vehicles",
     "Computers",
     "camera",
-    "House",
+    "Fashion & Beauty",
+    "Mobile",
     "Furnitures",
   ];
 
@@ -67,8 +69,8 @@ const Home = ({ match }) => {
           <h1>goods exchange platform</h1>
           <button>learn more</button>
         </div>
-      </div>
-      <Banner className="hero--banner" /> */}
+      </div> */}
+        <Banner className="hero--banner" />
         <div className="container section">
           <h2 className="pt-4 text-dark">
             Let's See What You are Looking for Today

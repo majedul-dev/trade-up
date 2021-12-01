@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
+import Moment from "react-moment";
+import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 import { FiHeart } from "react-icons/fi";
 import { GrNext } from "react-icons/gr";
-import map from "../../images/staticmap.png";
 import { OfferModal } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { productDetailsAction } from "../../actions/productActions";
@@ -110,6 +111,12 @@ const ProductDetail = ({ match, history }) => {
                     <h2>Exchange with - {product && product.exchangeWith}</h2>
                     <p>{product && product.name}</p>
                     <p>Exchange Price: ${product && product.exchangePrice}</p>
+                    <div className="es_shipping_date">
+                      <span>Estimated Shipping Date: </span>
+                      <Moment format="DD MMM YYYY">
+                        {product?.shippingDate}
+                      </Moment>
+                    </div>
                   </div>
                   {user && user._id === product.user._id ? (
                     ""
@@ -122,7 +129,7 @@ const ProductDetail = ({ match, history }) => {
                 ) : (
                   <div className="info--bottom">
                     <small>{product && product.addressOne}</small>
-                    <small>Today</small>
+                    <small>{format(product?.createdAt)}</small>
                   </div>
                 )}
 
@@ -173,7 +180,12 @@ const ProductDetail = ({ match, history }) => {
                     />
                     <div>
                       <h3>{product.user && product.user.username}</h3>
-                      <small>Member since Sep 2020</small>
+                      <small>
+                        Member since{" "}
+                        <Moment format="MMM YYYY">
+                          {product.user.createdAt}
+                        </Moment>
+                      </small>
                     </div>
                   </div>
                   <Link
@@ -183,7 +195,7 @@ const ProductDetail = ({ match, history }) => {
                     <GrNext className="user--profile" />
                   </Link>
                 </div>
-                {user && user._id === product.user._id ? (
+                {user && user._id === product?.user._id ? (
                   ""
                 ) : isAuthenticated ? (
                   <Link
@@ -209,7 +221,6 @@ const ProductDetail = ({ match, history }) => {
               <div className="productdetail__sellerLocation">
                 <h4>Posted in</h4>
                 <small>{product && product.addressOne}</small>
-                <img src={map} alt="Map" />
               </div>
               <h5>AD ID: {product._id}</h5>
             </div>
@@ -223,7 +234,7 @@ const ProductDetail = ({ match, history }) => {
           <div className="row my-5">
             <h2>
               Custommer Offers for <strong>"{product && product.name}"</strong>
-              {user && user._id === product.user._id
+              {user && user._id === product?.user._id
                 ? offers.product && (
                     <small className="d-block my-3">
                       You have {offers.product.custommerOffers.length} offers

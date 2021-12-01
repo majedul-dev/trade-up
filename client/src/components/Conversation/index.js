@@ -34,7 +34,7 @@ const Conversation = ({ conversation, userId }) => {
         <img src={user && user.avatar} alt="avatar" />
         <div>
           <h4 className="chat--username">{user && user.username}</h4>
-          <small>Hello</small>
+          {/* <small>Hello</small> */}
         </div>
       </Link>
     </li>
