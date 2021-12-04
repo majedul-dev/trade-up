@@ -1,5 +1,27 @@
 const { Schema, model } = require("mongoose");
 
+const reviewSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    avatar: {
+      type: String,
+      required: true,
+    },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    comment: {
+      type: String,
+      required: [true, "Comment should not be empty"],
+    },
+  },
+  { timestamps: true }
+);
+
 const productScema = new Schema(
   {
     user: {
@@ -23,17 +45,6 @@ const productScema = new Schema(
     category: {
       type: String,
       required: [true, "Please select category for this product"],
-      enum: {
-        values: [
-          "Electronics",
-          "vehicles",
-          "Computers",
-          "camera",
-          "Fashion & Beauty",
-          "Mobile",
-          "Furnitures",
-        ],
-      },
     },
     shippingDate: {
       type: Date,
@@ -68,12 +79,28 @@ const productScema = new Schema(
       type: String,
       required: [true, "Phone number is required"],
     },
+    numOffers: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     custommerOffers: [
       {
         type: Schema.Types.ObjectId,
         ref: "Offer",
       },
     ],
+    rating: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    numReviews: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    reviews: [reviewSchema],
   },
   { timestamps: true }
 );

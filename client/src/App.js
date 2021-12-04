@@ -20,6 +20,11 @@ import OfferDetail from "./pages/OfferDetail";
 import MyOfferDetails from "./pages/MyOfferDetails";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Admin from "./admin pages";
+import PrivateRouteForAdmin from "./components/Routing/PrivateRouteForAdmin";
+import Category from "./admin pages/Category";
+import Users from "./admin pages/Users";
+import EditUser from "./admin pages/EditUser";
 
 function App() {
   useEffect(() => {
@@ -50,6 +55,14 @@ function App() {
           <Route path="/offer/:id" component={OfferDetail} />
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
+          <PrivateRouteForAdmin path="/admin" exact component={Admin} />
+          <PrivateRouteForAdmin path="/category" exact component={Category} />
+          <PrivateRouteForAdmin path="/users" exact component={Users} />
+          <PrivateRouteForAdmin
+            path="/users/edit/:userId"
+            exact
+            component={EditUser}
+          />
         </Switch>
       </div>
       <Footer />

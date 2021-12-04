@@ -23,6 +23,10 @@ import {
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_RESET,
   UPDATE_PRODUCT_FAIL,
+  PRODUCT_REVIEW_SAVE_REQUEST,
+  PRODUCT_REVIEW_SAVE_SUCCESS,
+  PRODUCT_REVIEW_SAVE_FAIL,
+  PRODUCT_REVIEW_SAVE_RESET,
   CLEAR_ERRORS,
 } from "../constants/productConstants";
 
@@ -256,6 +260,35 @@ export const updateProductReducer = (state = { product: {} }, action) => {
         error: null,
       };
 
+    default:
+      return state;
+  }
+};
+
+export const productReviewReducer = (state = { review: {} }, action) => {
+  switch (action.type) {
+    case PRODUCT_REVIEW_SAVE_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case PRODUCT_REVIEW_SAVE_SUCCESS:
+      return {
+        loading: false,
+        review: action.payload.data,
+        success: true,
+      };
+
+    case PRODUCT_REVIEW_SAVE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    case PRODUCT_REVIEW_SAVE_RESET:
+      return {
+        review: {},
+      };
     default:
       return state;
   }

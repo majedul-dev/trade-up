@@ -22,6 +22,9 @@ import {
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAIL,
+  PRODUCT_REVIEW_SAVE_REQUEST,
+  PRODUCT_REVIEW_SAVE_SUCCESS,
+  PRODUCT_REVIEW_SAVE_FAIL,
   CLEAR_ERRORS,
 } from "../constants/productConstants";
 
@@ -153,6 +156,32 @@ export const updateProduct = (formData, productId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PRODUCT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const productReviewAction = (id, review) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_REVIEW_SAVE_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/products/${id}/reviews`,
+      review,
+      config
+    );
+
+    dispatch({ type: PRODUCT_REVIEW_SAVE_SUCCESS, payload: data });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: PRODUCT_REVIEW_SAVE_FAIL,
       payload: error.response.data.message,
     });
   }

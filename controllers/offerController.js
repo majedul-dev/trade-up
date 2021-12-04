@@ -44,7 +44,9 @@ exports.createOffer = catchAsyncErrors(async (req, res, next) => {
   });
 
   await Product.findByIdAndUpdate(req.params.id, {
-    $push: { custommerOffers: offer._id },
+    $push: {
+      custommerOffers: offer._id,
+    },
   });
 
   res.status(200).json({

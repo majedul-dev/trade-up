@@ -13,7 +13,7 @@ exports.allProducts = catchAsyncErrors(async (req, res, next) => {
   const productCount = await Product.countDocuments();
 
   const apiFeatures = new APIFeatures(
-    Product.find().select("-custommerOffers").sort({ createdAt: "desc" }),
+    Product.find().sort({ createdAt: "desc" }),
     req.query
   )
     .search()
@@ -238,4 +238,35 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
   res
     .status(200)
     .json({ success: true, message: "Product deleted successfully" });
+});
+
+// @route   POST api/products/:id/review
+// @desc    Comment on a product
+// @access  Private
+exports.productReviews = catchAsyncErrors(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    const review = {
+      name: req.body.name,
+      avatar: req.user.avatar,
+      rating: Number(req.body.rating),
+      comment: req.body.comment,
+    };
+
+    product.reviews.unshift(review);
+    product.numReviews = product.reviews.length;
+
+    product.rating =
+      product.reviews.reduce((acc, curr) => curr.rating + acc, 0) /
+      product.reviews.length;
+
+    const updatedProduct = await product.save();
+    res.status(201).json({
+      message: "Review saved successfully.",
+      data: updatedProduct.reviews[updatedProduct.reviews.length - 1],
+    });
+  } else {
+    res.status(404).json({ message: "Product not found" });
+  }
 });

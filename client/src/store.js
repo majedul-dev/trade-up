@@ -10,9 +10,15 @@ import {
   usersProductsReducer,
   deleteProductReducer,
   updateProductReducer,
+  productReviewReducer,
 } from "./reducers/productReducer";
 import { authReducer } from "./reducers/authReducer";
-import { getUserByIdReducer } from "./reducers/userReducer";
+import {
+  adminUserByIdReducer,
+  getAllUsersReducer,
+  getUserByIdReducer,
+  updateUserByAdminReducer,
+} from "./reducers/userReducer";
 import {
   createOfferReducers,
   deleteOfferReducers,
@@ -27,6 +33,11 @@ import {
   getUsersConversations,
 } from "./reducers/conversationReducer";
 import { createMessageReducer } from "./reducers/messageReducer";
+import {
+  createCategoryReducer,
+  deleteCategoryReducer,
+  getCategoriesReducer,
+} from "./reducers/categoryReducer";
 
 const reducer = combineReducers({
   createProduct: createProductReducer,
@@ -36,10 +47,14 @@ const reducer = combineReducers({
   usersProducts: usersProductsReducer,
   deleteProduct: deleteProductReducer,
   updateProduct: updateProductReducer,
+  productReview: productReviewReducer,
 
   auth: authReducer,
 
   getUserById: getUserByIdReducer,
+  getAllUsers: getAllUsersReducer,
+  updateUserByAdmin: updateUserByAdminReducer,
+  adminUserById: adminUserByIdReducer,
 
   createConversation: createConversationReducer,
   getConversations: getConversations,
@@ -53,6 +68,10 @@ const reducer = combineReducers({
   createOffer: createOfferReducers,
   deleteOffer: deleteOfferReducers,
   trackOffer: trackOfferReducers,
+
+  getCategories: getCategoriesReducer,
+  createCategory: createCategoryReducer,
+  deleteCategory: deleteCategoryReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
@@ -61,6 +80,10 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
 
 const userByIdFromStorage = localStorage.getItem("userById")
   ? JSON.parse(localStorage.getItem("userById"))
+  : null;
+
+const adminUserByIdFromStorage = localStorage.getItem("adminUserById")
+  ? JSON.parse(localStorage.getItem("adminUserById"))
   : null;
 
 const productsFromStorage = localStorage.getItem("products")
@@ -86,6 +109,7 @@ const myOffersFromStorage = localStorage.getItem("myoffers")
 const initialState = {
   auth: { user: userInfoFromStorage },
   getUserById: { user: userByIdFromStorage },
+  adminUserById: { user: adminUserByIdFromStorage },
   products: { products: productsFromStorage },
   productDetails: { product: productDetailFromStorage },
   myProductOffers: { offers: productOffersFromStorage },

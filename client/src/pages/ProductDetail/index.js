@@ -8,7 +8,10 @@ import { FiHeart } from "react-icons/fi";
 import { GrNext } from "react-icons/gr";
 import { OfferModal } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
-import { productDetailsAction } from "../../actions/productActions";
+import {
+  productDetailsAction,
+  productReviewAction,
+} from "../../actions/productActions";
 import { getUserById } from "../../actions/usersAction";
 import {
   myProductOffersAction,
@@ -16,10 +19,11 @@ import {
 } from "../../actions/offerActions";
 import Loader from "../../components/Loader";
 import { useAlert } from "react-alert";
-import { Button } from "../../components";
+import { Button, Rating } from "../../components";
 import DeleteModal from "../../components/Modals/DeleteModal";
 import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
 import { createConversation } from "../../actions/conversationAction";
+import { PRODUCT_REVIEW_SAVE_RESET } from "../../constants/productConstants";
 
 const ProductDetail = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -29,6 +33,9 @@ const ProductDetail = ({ match, history }) => {
 
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [reviews, setReviews] = useState([]);
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -39,6 +46,11 @@ const ProductDetail = ({ match, history }) => {
   };
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const {
+    loading: reviewLoading,
+    success: reviewSuccess,
+    error: reviewError,
+  } = useSelector((state) => state.productReview);
   const { loading, product, error } = useSelector(
     (state) => state.productDetails
   );
@@ -52,13 +64,25 @@ const ProductDetail = ({ match, history }) => {
     (state) => state.createConversation
   );
 
-  useEffect(() => {}, [conversationSuccess]);
+  useEffect(() => {
+    if (reviewSuccess) {
+      alert.success("Review submitted successfully");
+      setRating(0);
+      setComment("");
+      dispatch({ type: PRODUCT_REVIEW_SAVE_RESET });
+      dispatch(productDetailsAction(productId));
+    }
+  }, [conversationSuccess, reviewSuccess, alert, dispatch, productId]);
 
   useEffect(() => {
     if (createOfferError) {
       alert.error(createOfferError);
     }
-  }, [alert, createOfferError]);
+
+    if (reviewError) {
+      alert.error(reviewError);
+    }
+  }, [alert, createOfferError, reviewError]);
 
   useEffect(() => {
     if (success) {
@@ -75,6 +99,23 @@ const ProductDetail = ({ match, history }) => {
       return alert.error(error);
     }
   }, [dispatch, productId, alert, error, success]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(
+      productReviewAction(productId, {
+        name: user.username,
+        rating,
+        comment,
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (product || reviewSuccess) {
+      setReviews(product.reviews);
+    }
+  }, [product, reviewSuccess]);
 
   return (
     <section className="container section productdetail">
@@ -231,7 +272,7 @@ const ProductDetail = ({ match, history }) => {
       {user && user._id === product.user._id ? (
         <>
           <hr />
-          <div className="row my-5">
+          <div className="row my-5 mx-1">
             <h2>
               Custommer Offers for <strong>"{product && product.name}"</strong>
               {user && user._id === product?.user._id
@@ -286,6 +327,81 @@ const ProductDetail = ({ match, history }) => {
       ) : (
         ""
       )}
+
+      {/* Rating Form*/}
+      <hr />
+      <div className="mt-3">
+        <h3 className="mb-3">Write a customer review</h3>
+        {isAuthenticated ? (
+          <form onSubmit={submitHandler}>
+            <div className="form-group">
+              <select
+                className="form-control"
+                name="rating"
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+              >
+                <option>Select Rating</option>
+                <option value="1">1- Poor</option>
+                <option value="2">2- Fair</option>
+                <option value="3">3- Good</option>
+                <option value="4">4- Very Good</option>
+                <option value="5">5- Excelent</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Comment</label>
+              <textarea
+                rows={3}
+                name="comment"
+                className="form-control"
+                placeholder="Enter your comment..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+            </div>
+            <button
+              disabled={reviewLoading ? true : false}
+              className={`button ${reviewLoading ? "disabled" : ""}`}
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        ) : (
+          <div>
+            Please <Link to="/login">Log in</Link> to write a review.
+          </div>
+        )}
+      </div>
+
+      {/* Rating lists */}
+      <div md={6} sm={12} className="mt-3">
+        <h2 className="mb-2">Reviews</h2>
+        {reviews && reviews.length === 0 && <div>There is no review</div>}
+        <div className="mb-2">Total reviews {reviews.length}</div>
+
+        {reviews &&
+          reviews.map((review) => (
+            <div className="card mb-2">
+              <div key={review._id} className="card-body">
+                <div className="d-flex align-items-center">
+                  <img
+                    src={review.avatar}
+                    alt=""
+                    style={{ height: 40, width: 40, borderRadius: "100%" }}
+                  />
+                  <strong className="ml-2">{review.name}</strong>
+                </div>
+                <div>
+                  <Rating value={review.rating}></Rating>
+                </div>
+                <div>{review.comment}</div>
+                <small className="text-muted">{format(review.createdAt)}</small>
+              </div>
+            </div>
+          ))}
+      </div>
     </section>
   );
 };

@@ -15,6 +15,7 @@ const EditProduct = ({ history }) => {
   const { success, loading, error } = useSelector(
     (state) => state.updateProduct
   );
+  const { categories } = useSelector((state) => state.getCategories);
 
   const [category, setCategory] = useState(product.category);
   const [name, setName] = useState(product.name);
@@ -28,14 +29,6 @@ const EditProduct = ({ history }) => {
   const [images, setImages] = useState([]);
   const [oldImages, setOldImages] = useState(product.images);
   const [previewImages, setPreviewImages] = useState([]);
-
-  const categories = [
-    "Electronics",
-    "vehicles",
-    "Computers",
-    "House",
-    "Furnitures",
-  ];
 
   useEffect(() => {
     // dispatch(createProduct())
@@ -106,9 +99,9 @@ const EditProduct = ({ history }) => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
-                {categories.map((cat, index) => (
-                  <option key={index} value={cat}>
-                    {cat}
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat.category}>
+                    {cat.category}
                   </option>
                 ))}
               </select>

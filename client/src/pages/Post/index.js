@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { clearErrors, createProduct } from "../../actions/productActions";
 import { CREATE_PRODUCT_RESET } from "../../constants/productConstants";
+import { getCategories } from "../../actions/categoryActions";
 
 const Post = ({ history }) => {
   const dispatch = useDispatch();
@@ -22,23 +23,17 @@ const Post = ({ history }) => {
   const [images, setImages] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
 
-  const categories = [
-    "Electronics",
-    "vehicles",
-    "Computers",
-    "camera",
-    "Fashion & Beauty",
-    "Mobile",
-    "Furnitures",
-  ];
-
   const { user } = useSelector((state) => state.auth);
   const { success, loading, error } = useSelector(
     (state) => state.createProduct
   );
+  const { categories } = useSelector((state) => state.getCategories);
 
   useEffect(() => {
-    // dispatch(createProduct())
+    dispatch(getCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -106,11 +101,12 @@ const Post = ({ history }) => {
                 onChange={(e) => setCategory(e.target.value)}
               >
                 <option>--Select Category--</option>
-                {categories.map((cat, index) => (
-                  <option key={index} value={cat}>
-                    {cat}
-                  </option>
-                ))}
+                {categories &&
+                  categories.map((cat) => (
+                    <option key={cat._id} value={cat.category}>
+                      {cat.category}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className="form-group">

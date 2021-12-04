@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
 import { FiHeart } from "react-icons/fi";
-// import { Banner } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import {
@@ -12,6 +11,7 @@ import {
 import Loader from "../../components/Loader";
 import Pagination from "react-js-pagination";
 import { Banner } from "../../components";
+import { getCategories } from "../../actions/categoryActions";
 
 const Home = ({ match }) => {
   const dispatch = useDispatch();
@@ -20,19 +20,16 @@ const Home = ({ match }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [category, setCategory] = useState("");
 
-  const categories = [
-    "Electronics",
-    "vehicles",
-    "Computers",
-    "camera",
-    "Fashion & Beauty",
-    "Mobile",
-    "Furnitures",
-  ];
-
   const { loading, products, error, productsCount, resPerPage } = useSelector(
     (state) => state.products
   );
+  const { loading: categoryLoading, categories } = useSelector(
+    (state) => state.getCategories
+  );
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
 
   const keyword = match.params.keyword;
 
@@ -46,30 +43,30 @@ const Home = ({ match }) => {
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
   }
+  console.log(category);
 
   return (
     <>
-      <div className="categories">
-        <ul className="container categories__items">
-          <li>
-            <strong>CATEGORIES</strong>
-          </li>
-          {categories.map((category, index) => (
-            <li key={index} onClick={() => setCategory(category)}>
-              {category}
+      {categoryLoading ? (
+        ""
+      ) : (
+        <div className="categories">
+          <ul className="container categories__items">
+            <li>
+              <strong>CATEGORIES</strong>
             </li>
-          ))}
-        </ul>
-      </div>
-      <section>
-        {/* <div className="hero">
-        <div className="container hero--content">
-          <h3>Exchange everything you want</h3>
-          <h2>pakistan's first</h2>
-          <h1>goods exchange platform</h1>
-          <button>learn more</button>
+            {categories &&
+              categories.map((cat) => {
+                return (
+                  <li key={cat._id} onClick={() => setCategory(cat.category)}>
+                    {cat.category}
+                  </li>
+                );
+              })}
+          </ul>
         </div>
-      </div> */}
+      )}
+      <section>
         <Banner className="hero--banner" />
         <div className="container section">
           <h2 className="pt-4 text-dark">

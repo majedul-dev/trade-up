@@ -72,11 +72,15 @@ const Navbar = () => {
                     <BsFillFileEarmarkSpreadsheetFill /> <span>Offers</span>
                   </li>
                 </Link>
-                <Link>
-                  <li onClick={closePopupProfile}>
-                    <FiSettings /> <span>Setting</span>
-                  </li>
-                </Link>
+
+                {user.role === "admin" && (
+                  <Link to={`${user.role === "admin" ? "/admin" : "/"}`}>
+                    <li onClick={closePopupProfile}>
+                      <FiSettings /> <span>Admin Panel</span>
+                    </li>
+                  </Link>
+                )}
+
                 <Link to="/" onClick={logoutHandler}>
                   <li onClick={closePopupProfile}>
                     <FiLogOut /> <span>Logout</span>

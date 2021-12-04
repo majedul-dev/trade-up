@@ -6,6 +6,7 @@ import Input from "./Input";
 import Navbar from "./Navbar";
 import OfferModal from "./OfferModal";
 import TrackOrderModal from "./TrackOrderModal";
+import Rating from "./Rating";
 
 export {
   Banner,
@@ -16,4 +17,5 @@ export {
   Navbar,
   OfferModal,
   TrackOrderModal,
+  Rating,
 };

@@ -8,6 +8,7 @@ const {
   getOwnProducts,
   getUsersProductsByUserId,
   getMyProductOffers,
+  productReviews,
 } = require("../controllers/productController");
 const { isAuthenticated } = require("../middlewares/auth");
 
@@ -19,5 +20,6 @@ router.route("/getsingle/:id").get(getSingleProduct);
 router.route("/create").post(isAuthenticated, createProduct);
 router.route("/delete/:id").delete(isAuthenticated, deleteProduct);
 router.route("/edit/:id").put(isAuthenticated, updateProduct);
+router.route("/:id/reviews").post(isAuthenticated, productReviews);
 
 module.exports = router;
