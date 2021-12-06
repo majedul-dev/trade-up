@@ -43,7 +43,6 @@ const Home = ({ match }) => {
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
   }
-  console.log(category);
 
   return (
     <>

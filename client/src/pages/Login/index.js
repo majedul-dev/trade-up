@@ -61,11 +61,16 @@ const Login = ({ history }) => {
         <Button
           disabled={loading ? true : false}
           type="submit"
-          className={`button mt-3 ${loading ? "disabled" : ""}`}
+          className={`button ${loading ? "disabled" : ""}`}
         >
           Login
         </Button>
       </form>
+
+      <Link to="/login-org">
+        <Button className="button">Login As Organization</Button>
+      </Link>
+
       <p className="mt-3">
         Don't have an account? <Link to="/register">Signup</Link>
       </p>

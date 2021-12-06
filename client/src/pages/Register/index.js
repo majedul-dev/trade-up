@@ -141,6 +141,11 @@ const Register = ({ history }) => {
           Register
         </Button>
       </form>
+
+      <Link to="/register-org">
+        <Button className="button">Signup As Organization</Button>
+      </Link>
+
       <p className="mt-3">
         Already have an account? <Link to="/login">Login</Link>
       </p>

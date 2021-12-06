@@ -60,6 +60,7 @@
   width: 70%;
   height: 8rem;
   margin: 0 auto;
+  object-fit: contain;
 }
 .product--saveicon {
   font-size: 1.5rem;
@@ -94,8 +95,8 @@
 }
 .page__item {
   display: flex;
-  background: rgb(201, 205, 255);
-  border: 2px solid var(--primary-color);
+  background: #d4d7fa;
+  border: 2px solid #d4d7fa;
   margin: 0 2px;
 }
 .page__link {

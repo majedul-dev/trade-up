@@ -90,9 +90,14 @@ const Navbar = () => {
             </div>
           ) : (
             !loading && (
-              <Link to="/login" className="px-3">
-                <strong>Login</strong>
-              </Link>
+              <>
+                <Link to="/login" className="px-3">
+                  <strong>Login</strong>
+                </Link>
+                <Link to="/register" className="pr-3">
+                  <strong>Sign Up</strong>
+                </Link>
+              </>
             )
           )}
 

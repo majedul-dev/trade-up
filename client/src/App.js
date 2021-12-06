@@ -25,6 +25,8 @@ import PrivateRouteForAdmin from "./components/Routing/PrivateRouteForAdmin";
 import Category from "./admin pages/Category";
 import Users from "./admin pages/Users";
 import EditUser from "./admin pages/EditUser";
+import RegisterOrg from "./pages/RegisterOrg";
+import LoginOrg from "./pages/LoginOrg";
 
 function App() {
   useEffect(() => {
@@ -46,7 +48,9 @@ function App() {
             component={UsersProfile}
           />
           <Route path="/login" component={Login} />
+          <Route path="/login-org" component={LoginOrg} />
           <Route path="/register" component={Register} />
+          <Route path="/register-org" component={RegisterOrg} />
           <Route path="/post" component={Post} />
           <Route path="/edit/product/:productId" component={EditProduct} />
           <Route path="/chat" component={Chat} />

@@ -7,6 +7,9 @@ import { clearErrors, createProduct } from "../../actions/productActions";
 import { CREATE_PRODUCT_RESET } from "../../constants/productConstants";
 import { getCategories } from "../../actions/categoryActions";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 const Post = ({ history }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
@@ -15,7 +18,7 @@ const Post = ({ history }) => {
   const [name, setName] = useState("");
   const [exchangeWith, setExchangeWith] = useState("");
   const [exchangePrice, setExchangePrice] = useState(0);
-  const [shippingDate, setShippingDate] = useState("");
+  const [shippingDate, setShippingDate] = useState(null);
   const [description, setDescription] = useState("");
   const [addressOne, setAddressOne] = useState("");
   const [addressTwo, setAddressTwo] = useState("");
@@ -144,14 +147,20 @@ const Post = ({ history }) => {
             </div>
             <div className="form-group">
               <label>Estimated day of shipping</label>
-              <input
+              <DatePicker
+                selected={shippingDate}
+                onChange={(date) => setShippingDate(date)}
+                minDate={new Date()}
+                className="form-control"
+              />
+              {/* <input
                 className="form-control"
                 type="date"
                 placeholder="Estimated days of shipping"
                 name="shippingDate"
                 value={shippingDate}
                 onChange={(e) => setShippingDate(e.target.value)}
-              />
+              /> */}
             </div>
             <div className="form-group">
               <label>Description</label>

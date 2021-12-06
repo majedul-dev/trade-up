@@ -15,11 +15,14 @@ h5 {
 }
 .productdetail__carouselItem {
   position: relative;
-  height: 60vh;
+  height: 600px;
+  width: 100%;
 }
 .productdetail__carouselItem > img {
   position: absolute;
   height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 .productdetail__description,
 .productdetail__info,

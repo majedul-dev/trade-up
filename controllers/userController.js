@@ -2,16 +2,27 @@ const User = require("../models/User");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorHandler");
 const sendToken = require("../utils/sendJwtToken");
+const redis = require("redis");
+
+const redisClient = redis.createClient(6379, "localhost");
+const DEFAULT_EXPAIRATION = 3600;
 
 // @route   GET api/users/admin/allusers
 // @desc    Get all users by admin
 // @access  Private
 exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
-  const users = await User.find();
-
-  res.status(200).json({
-    success: true,
-    users,
+  redisClient.get("users", async (err, users) => {
+    if (err) console.log(err);
+    if (users != null) {
+      return res.json(JSON.parse(users));
+    } else {
+      const users = await User.find();
+      redisClient.setex("users", DEFAULT_EXPAIRATION, JSON.stringify(users));
+    }
+    res.status(200).json({
+      success: true,
+      users,
+    });
   });
 });
 

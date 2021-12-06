@@ -36,9 +36,9 @@ const Admin = () => {
             </thead>
             <tbody>
               {products &&
-                products.map((product) => (
+                products.map((product, index) => (
                   <tr key={product._id}>
-                    <th scope="row">{product._id}</th>
+                    <th scope="row">{index + 1}</th>
                     <td>{product.name}</td>
                     <td>{product.category}</td>
                     <td>{product.custommerOffers.length}</td>
