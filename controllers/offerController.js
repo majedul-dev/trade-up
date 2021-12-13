@@ -90,7 +90,7 @@ exports.getMyProductOffers = catchAsyncErrors(async (req, res, next) => {
 
 exports.getOfferById = catchAsyncErrors(async (req, res, next) => {
   const offer = await Offer.findById(req.params.id)
-    .populate("user", ["username", "avatar"])
+    .populate("user", ["username", "orgname", "businessType", "avatar"])
     .populate("product");
 
   if (!offer) {

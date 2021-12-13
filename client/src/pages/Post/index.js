@@ -16,13 +16,13 @@ const Post = ({ history }) => {
 
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
+  const [model, setModel] = useState("");
+  const [brand, setBrand] = useState("");
+  const [make, setMake] = useState(new Date());
   const [exchangeWith, setExchangeWith] = useState("");
   const [exchangePrice, setExchangePrice] = useState(0);
-  const [shippingDate, setShippingDate] = useState(null);
+  const [shippingDate, setShippingDate] = useState(new Date());
   const [description, setDescription] = useState("");
-  const [addressOne, setAddressOne] = useState("");
-  const [addressTwo, setAddressTwo] = useState("");
-  const [phone, setPhone] = useState("");
   const [images, setImages] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
 
@@ -74,13 +74,13 @@ const Post = ({ history }) => {
     const formData = new FormData();
     formData.set("category", category);
     formData.set("name", name);
+    formData.set("model", model);
+    formData.set("brand", brand);
+    formData.set("make", make);
     formData.set("exchangeWith", exchangeWith);
     formData.set("exchangePrice", exchangePrice);
     formData.set("shippingDate", shippingDate);
     formData.set("description", description);
-    formData.set("addressOne", addressOne);
-    formData.set("addressTwo", addressTwo);
-    formData.set("phone", phone);
 
     images.forEach((img) => {
       formData.append("images", img);
@@ -95,7 +95,7 @@ const Post = ({ history }) => {
         <div className="">
           <h3 className="text-center">Post your ad</h3>
           <form className="post__form" onSubmit={submitHandler}>
-            <h4>Include Some details</h4>
+            <h4>Add Some Details</h4>
             <div className="form-group">
               <label>Select Category</label>
               <select
@@ -121,6 +121,39 @@ const Post = ({ history }) => {
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Model</label>
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Model Name"
+                name="model"
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Make</label>
+              <DatePicker
+                className="form-control"
+                selected={make}
+                onChange={(date) => setMake(date)}
+                showYearPicker
+                dateFormat="yyyy"
+                maxDate={new Date()}
+              />
+            </div>
+            <div className="form-group">
+              <label>Brand</label>
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Brand"
+                name="brand"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
               />
             </div>
             <div className="form-group">
@@ -188,50 +221,17 @@ const Post = ({ history }) => {
               />
             </div>
 
-            {previewImages.map((img) => (
-              <img
-                src={img}
-                key={img}
-                alt="Images preview"
-                className="mr-2"
-                width="55"
-                height="52"
-              />
-            ))}
-
-            <h4>Your address</h4>
-            <div className="form-group">
-              <label>Address one</label>
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Address one"
-                name="addressOne"
-                value={addressOne}
-                onChange={(e) => setAddressOne(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Address two</label>
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Address two"
-                name="addressTwo"
-                value={addressTwo}
-                onChange={(e) => setAddressTwo(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Phone</label>
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Phone number"
-                name="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
+            <div className="mt-3 mb-5">
+              {previewImages.map((img) => (
+                <img
+                  src={img}
+                  key={img}
+                  alt="Images preview"
+                  className="mr-2"
+                  width="55"
+                  height="52"
+                />
+              ))}
             </div>
             <Button
               disabled={loading ? true : false}

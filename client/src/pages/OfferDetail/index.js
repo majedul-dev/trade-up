@@ -52,7 +52,7 @@ const OfferDetail = ({ match }) => {
         )}
         <div className="col-md-4">
           <div className="user-info box-wrapper">
-            <h4>User Info</h4>
+            <h3>User Info</h3>
             <div className="mt-2">
               <img
                 src={offer.user && offer.user.avatar}
@@ -60,7 +60,11 @@ const OfferDetail = ({ match }) => {
                 className="mr-2"
               />
               <div>
-                <h3 className="mb-2">{offer.user.username}</h3>
+                <h3 className="mb-2">
+                  {offer.user.username
+                    ? offer.user.username
+                    : offer.user.orgname}
+                </h3>
                 <h4>Phone: {offer.phone}</h4>
               </div>
             </div>

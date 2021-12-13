@@ -150,8 +150,16 @@ const ProductDetail = ({ match, history }) => {
                 <div className="info--top">
                   <div>
                     <h2>Exchange with - {product && product.exchangeWith}</h2>
-                    <p>{product && product.name}</p>
-                    <p>Exchange Price: ${product && product.exchangePrice}</p>
+                    <p>Name - {product && product.name}</p>
+                    <p>Model - {product && product.model}</p>
+                    <p>Brand - {product && product.brand}</p>
+                    <p>
+                      Make -{" "}
+                      <Moment format="YYYY">{product && product.make}</Moment>
+                    </p>
+                    <p>
+                      Exchange Price - RS:{product && product.exchangePrice}
+                    </p>
                     <div className="es_shipping_date">
                       <span>Estimated Shipping Date: </span>
                       <Moment format="DD MMM YYYY">
@@ -169,7 +177,7 @@ const ProductDetail = ({ match, history }) => {
                   <div className="py-2"></div>
                 ) : (
                   <div className="info--bottom">
-                    <small>{product && product.addressOne}</small>
+                    <small>{product && product.user.address}</small>
                     <small>{format(product?.createdAt)}</small>
                   </div>
                 )}
@@ -220,7 +228,11 @@ const ProductDetail = ({ match, history }) => {
                       alt="avatar"
                     />
                     <div>
-                      <h3>{product.user && product.user.username}</h3>
+                      <h3>
+                        {product.user && product.user.username
+                          ? product.user.username
+                          : product.user.orgname}
+                      </h3>
                       <small>
                         Member since{" "}
                         <Moment format="MMM YYYY">
@@ -260,10 +272,10 @@ const ProductDetail = ({ match, history }) => {
                 )}
               </div>
               <div className="productdetail__sellerLocation">
-                <h4>Posted in</h4>
-                <small>{product && product.addressOne}</small>
+                <h4 className="mb-3">Posted in</h4>
+                <div>Address: {product && product.user.address}</div>
+                <div>Phone: {product && product.user.phone}</div>
               </div>
-              <h5>AD ID: {product._id}</h5>
             </div>
           </>
         )}
@@ -274,7 +286,7 @@ const ProductDetail = ({ match, history }) => {
           <hr />
           <div className="row my-5 mx-1">
             <h2>
-              Custommer Offers for <strong>"{product && product.name}"</strong>
+              Customer Offers for <strong>{product?.name}</strong>
               {user && user._id === product?.user._id
                 ? offers.product && (
                     <small className="d-block my-3">
@@ -330,50 +342,54 @@ const ProductDetail = ({ match, history }) => {
 
       {/* Rating Form*/}
       <hr />
-      <div className="mt-3">
-        <h3 className="mb-3">Write a customer review</h3>
-        {isAuthenticated ? (
-          <form onSubmit={submitHandler}>
-            <div className="form-group">
-              <select
-                className="form-control"
-                name="rating"
-                value={rating}
-                onChange={(e) => setRating(e.target.value)}
+      {user && user._id === product.user._id ? (
+        ""
+      ) : (
+        <div className="mt-3">
+          <h3 className="mb-3">Write a customer review</h3>
+          {isAuthenticated ? (
+            <form onSubmit={submitHandler}>
+              <div className="form-group">
+                <select
+                  className="form-control"
+                  name="rating"
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                >
+                  <option>Select Rating</option>
+                  <option value="1">1- Poor</option>
+                  <option value="2">2- Fair</option>
+                  <option value="3">3- Good</option>
+                  <option value="4">4- Very Good</option>
+                  <option value="5">5- Excelent</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Comment</label>
+                <textarea
+                  rows={3}
+                  name="comment"
+                  className="form-control"
+                  placeholder="Enter your comment..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+              </div>
+              <button
+                disabled={reviewLoading ? true : false}
+                className={`button ${reviewLoading ? "disabled" : ""}`}
+                type="submit"
               >
-                <option>Select Rating</option>
-                <option value="1">1- Poor</option>
-                <option value="2">2- Fair</option>
-                <option value="3">3- Good</option>
-                <option value="4">4- Very Good</option>
-                <option value="5">5- Excelent</option>
-              </select>
+                Submit
+              </button>
+            </form>
+          ) : (
+            <div>
+              Please <Link to="/login">Log in</Link> to write a review.
             </div>
-            <div className="form-group">
-              <label>Comment</label>
-              <textarea
-                rows={3}
-                name="comment"
-                className="form-control"
-                placeholder="Enter your comment..."
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-            </div>
-            <button
-              disabled={reviewLoading ? true : false}
-              className={`button ${reviewLoading ? "disabled" : ""}`}
-              type="submit"
-            >
-              Submit
-            </button>
-          </form>
-        ) : (
-          <div>
-            Please <Link to="/login">Log in</Link> to write a review.
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       {/* Rating lists */}
       <div md={6} sm={12} className="mt-3">

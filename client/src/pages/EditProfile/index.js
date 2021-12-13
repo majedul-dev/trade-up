@@ -12,13 +12,19 @@ const EditProfile = () => {
   const { loading } = useSelector((state) => state.getUserById);
 
   const [username, setUsername] = useState(user.username);
+  const [orgname, setOrgname] = useState(user.orgname);
+  const [businessType, setBusinessType] = useState(user.businessType);
   const [email, setEmail] = useState(user.email);
+  const [address, setAddress] = useState(user.address);
+  const [phone, setPhone] = useState(user.phone);
 
   useEffect(() => {}, [user]);
 
   const handelSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser({ username, email }));
+    dispatch(
+      updateUser({ username, orgname, businessType, email, address, phone })
+    );
   };
 
   return (
@@ -48,23 +54,47 @@ const EditProfile = () => {
                 <div className="editProfile__basicInfo">
                   <h4 className="mb-3">Basic information</h4>
                   <div className="form-group">
-                    <input
-                      className="form-control"
-                      type="text"
-                      placeholder="Username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
+                    {user.username ? (
+                      <input
+                        className="form-control"
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    ) : (
+                      <>
+                        <input
+                          className="form-control"
+                          type="text"
+                          placeholder="Organization Name"
+                          value={orgname}
+                          onChange={(e) => setOrgname(e.target.value)}
+                        />
+                        <input
+                          className="form-control mt-3"
+                          type="text"
+                          placeholder="Business Type"
+                          value={businessType}
+                          onChange={(e) => setBusinessType(e.target.value)}
+                        />
+                        <input
+                          className="form-control mt-3"
+                          type="text"
+                          placeholder="Address"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                        />
+                        <input
+                          className="form-control mt-3"
+                          type="text"
+                          placeholder="Phone"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                        />
+                      </>
+                    )}
                   </div>
-                  {/* <div className="form-group">
-                    <textarea
-                      className="form-control"
-                      placeholder="About me (optional)"
-                      cols="10"
-                      rows="5"
-                      value={description}
-                    />
-                  </div> */}
                 </div>
                 <div className="editProfile__contactInfo">
                   <h4 className="mb-3">Contact information</h4>

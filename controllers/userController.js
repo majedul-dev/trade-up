@@ -2,27 +2,16 @@ const User = require("../models/User");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorHandler");
 const sendToken = require("../utils/sendJwtToken");
-const redis = require("redis");
-
-const redisClient = redis.createClient(6379, "localhost");
-const DEFAULT_EXPAIRATION = 3600;
 
 // @route   GET api/users/admin/allusers
 // @desc    Get all users by admin
 // @access  Private
 exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
-  redisClient.get("users", async (err, users) => {
-    if (err) console.log(err);
-    if (users != null) {
-      return res.json(JSON.parse(users));
-    } else {
-      const users = await User.find();
-      redisClient.setex("users", DEFAULT_EXPAIRATION, JSON.stringify(users));
-    }
-    res.status(200).json({
-      success: true,
-      users,
-    });
+  const users = await User.find();
+
+  res.status(200).json({
+    success: true,
+    users,
   });
 });
 
@@ -144,8 +133,12 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
   const newUserDate = {
     username: req.body.username,
+    orgname: req.body.orgname,
+    businessType: req.body.businessType,
     email: req.body.email,
     description: req.body.description,
+    address: req.body.address,
+    phone: req.body.phone,
   };
 
   // Update avatar: TODO

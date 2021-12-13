@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import Moment from "react-moment";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import { myProducts } from "../../actions/productActions";
+import { format } from "timeago.js";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -21,8 +23,10 @@ const Profile = () => {
           <div className="profile__info">
             <img src={user.avatar && user.avatar} alt="" />
             <div>
-              <h2>{user.username}</h2>
-              <small>Member since Sep 2020</small>
+              <h2>{user.username ? user.username : user.orgname}</h2>
+              <small>
+                Member since <Moment format="MMM YYYY">{user.createdAt}</Moment>
+              </small>
             </div>
             <Link to="/edit-profile" className="profile__btn">
               Edit Profile
@@ -37,45 +41,41 @@ const Profile = () => {
             </h2>
           )}
           <div className="row py-3">
-            {loading ? (
-              <Loader />
-            ) : (
-              products &&
-              products.map((product) => (
-                <>
-                  <Link
-                    to={`/product/${product._id}`}
-                    className="col-md-4"
-                    key={product.id}
-                  >
-                    <div className="card mb-4">
-                      <div className="product--top">
-                        <img
-                          src={product.images[0].url}
-                          alt="avatar"
-                          className="product--img"
-                        />
-                        {/* <HiOutlineDotsVertical
-                          onClick={productActions(product._id)}
-                          className="product--saveicon"
-                        /> */}
+            <div className="col-md-4 col-sm-6">
+              {loading ? (
+                <Loader />
+              ) : (
+                products &&
+                products.map((product) => (
+                  <>
+                    <Link
+                      to={`/product/${product._id}`}
+                      className="col-md-4"
+                      key={product.id}
+                    >
+                      <div className="card mb-4">
+                        <div className="product--top">
+                          <img
+                            src={product.images[0].url}
+                            alt="avatar"
+                            className="product--img"
+                          />
+                        </div>
+                        <div className="card-body product--content">
+                          <h3 className="card-text text-muted">
+                            {product.name}
+                          </h3>
+                          <h4>Exchange with - {product.exchangeWith}</h4>
+                        </div>
+                        <div className="product--footer">
+                          <small>{format(product.createdAt)}</small>
+                        </div>
                       </div>
-                      <div className="card-body product--content">
-                        <h3>{product.name}</h3>
-                        {/* <p>2006 - 90,000 km</p> */}
-                        <p className="card-text text-muted">
-                          {product.description.slice(0, 25)}...
-                        </p>
-                      </div>
-                      <div className="product--footer">
-                        <small>{product.addressOne}</small>
-                        {/* <small>{product.postedAt}</small> */}
-                      </div>
-                    </div>
-                  </Link>
-                </>
-              ))
-            )}
+                    </Link>
+                  </>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>

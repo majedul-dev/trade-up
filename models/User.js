@@ -8,10 +8,13 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      required: [true, "Please enter unique username"],
-      unique: true,
-      minlength: [3, "Username should minimum 3 characters"],
-      maxlength: [20, "Username should not exceed 20 characters"],
+      default: "",
+    },
+    orgname: {
+      type: String,
+    },
+    businessType: {
+      type: String,
     },
     email: {
       type: String,
@@ -25,23 +28,17 @@ const userSchema = new Schema(
       minlength: [6, "Password should be longer than 6 characters"],
       select: false,
     },
-    description: {
+    address: {
       type: String,
-      maxlength: 5000,
+      required: [true, "Address is required"],
+    },
+    phone: {
+      type: String,
+      required: [true, "Phone number is required"],
     },
     avatar: {
       type: String,
     },
-    // avatar: {
-    //   public_id: {
-    //     type: String,
-    //     required: true,
-    //   },
-    //   url: {
-    //     type: String,
-    //     required: true,
-    //   },
-    // },
     role: {
       type: String,
       default: "user",

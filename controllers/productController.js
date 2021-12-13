@@ -13,7 +13,7 @@ exports.allProducts = catchAsyncErrors(async (req, res, next) => {
   const productCount = await Product.countDocuments();
 
   const apiFeatures = new APIFeatures(
-    Product.find().sort({ createdAt: "desc" }),
+    Product.find().sort({ createdAt: "desc" }).populate("user", "address"),
     req.query
   )
     .search()
@@ -36,7 +36,11 @@ exports.allProducts = catchAsyncErrors(async (req, res, next) => {
 exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id).populate("user", [
     "username",
+    "orgname",
+    "businessType",
     "avatar",
+    "address",
+    "phone",
     "createdAt",
   ]);
 
@@ -69,25 +73,6 @@ exports.getOwnProducts = catchAsyncErrors(async (req, res, next) => {
     products,
   });
 });
-
-// // @route   GET api/products/my/:userId
-// // @desc    Get user's products offers
-// // @access  Private
-// exports.getMyProductOffers = catchAsyncErrors(async (req, res, next) => {
-//   const product = await Product.findById(req.params.id).populate("user", [
-//     "username",
-//     "avatar",
-//   ]);
-
-//   if (!product) {
-//     return next(new ErrorHandler("Product not found", 404));
-//   }
-
-//   res.status(200).json({
-//     success: true,
-//     product,
-//   });
-// });
 
 // @route   GET api/products/:userId
 // @desc    Get user's products

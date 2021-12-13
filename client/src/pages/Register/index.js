@@ -14,12 +14,18 @@ const Register = ({ history }) => {
     username: "",
     email: "",
     password: "",
+    address: "",
+    phone: "",
   });
 
-  const { username, email, password } = user;
+  const { username, email, password, address, phone } = user;
 
-  const [avatar, setAvatar] = useState("");
-  const [avatarPreview, setAvatarPreview] = useState("/images/no-image.jpg");
+  const [avatar, setAvatar] = useState(
+    "https://res.cloudinary.com/majedul/image/upload/v1626283605/avatars/no-image_fslp6e.jpg"
+  );
+  const [avatarPreview, setAvatarPreview] = useState(
+    "https://res.cloudinary.com/majedul/image/upload/v1626283605/avatars/no-image_fslp6e.jpg"
+  );
 
   const { isAuthenticated, loading, error } = useSelector(
     (state) => state.auth
@@ -56,10 +62,28 @@ const Register = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
 
+    if (username === "") {
+      return alert.error("Enter Username");
+    }
+    if (email === "") {
+      return alert.error("Enter a valid Email");
+    }
+    if (password === "") {
+      return alert.error("Enter Password");
+    }
+    if (address === "") {
+      return alert.error("Enter Address");
+    }
+    if (phone === "") {
+      return alert.error("Enter phone");
+    }
+
     const formData = new FormData();
     formData.set("username", username);
     formData.set("email", email);
     formData.set("password", password);
+    formData.set("address", address);
+    formData.set("phone", phone);
     formData.set("avatar", avatar);
 
     dispatch(register(formData));
@@ -103,14 +127,29 @@ const Register = ({ history }) => {
             onChange={onChange}
           />
         </div>
-        {/* <div className="form-group">
-          <label>Confirm Password</label>
-          <Input
-            placeholder="Confirm Password"
-            type="password"
-            name="confirmPassword"
+        <div className="form-group">
+          <label>Address</label>
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Enter Your Address"
+            name="address"
+            value={address}
+            onChange={onChange}
           />
-        </div> */}
+        </div>
+
+        <div className="form-group">
+          <label>Phone</label>
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Phone number"
+            name="phone"
+            value={phone}
+            onChange={onChange}
+          />
+        </div>
         <Form.Group controlId="formFileLg" className="mb-3">
           <Form.Label>Avatar</Form.Label>
           <div style={{ display: "flex", alignItems: "center" }}>

@@ -45,10 +45,10 @@ const Category = ({ history }) => {
               </tr>
             </thead>
             <tbody>
-              {categories.map((category) => (
+              {categories.map((category, index) => (
                 <>
                   <tr key={category._id}>
-                    <th scope="row">{category._id}</th>
+                    <th scope="row">{index + 1}</th>
                     <td>{category.category}</td>
                     <td>
                       <button

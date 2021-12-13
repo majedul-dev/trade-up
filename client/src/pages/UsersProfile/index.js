@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserById } from "../../actions/usersAction";
 import { usersProducts } from "../../actions/productActions";
 import Loader from "../../components/Loader";
-import avatar from "../../images/no-image.JPG";
+import { format } from "timeago.js";
 
 const UsersProfile = ({ match }) => {
   const dispatch = useDispatch();
@@ -26,22 +26,25 @@ const UsersProfile = ({ match }) => {
           <Loader />
         ) : (
           <div className="profile__userInfo">
-            <img src={user ? user.avatar.url : avatar} alt="" />
+            <img src={user.avatar} alt="avatar" />
             <div>
-              <h3>{user ? user.username : "Mazedul Islam"}</h3>
-              <p>Location: Magura Khulna Bangladesh</p>
+              <h3 className="mb-2">
+                {user && user.username ? user.username : user.orgname}
+              </h3>
+              <p>Address: {user && user.address}</p>
+              <p>Phone: {user && user.phone}</p>
             </div>
           </div>
         )}
         <div className="profile__postedAd">
+          <h4 className="mb-3">Published Exchanges</h4>
           <div className="row">
-            <h4 className="mb-3">Published Exchanges</h4>
-            {productsLoading ? (
-              <Loader />
-            ) : (
-              products &&
-              products.map((product) => (
-                <div className="col-md-3 col-sm-6">
+            <div className="col-md-3 col-sm-6">
+              {productsLoading ? (
+                <Loader />
+              ) : (
+                products &&
+                products.map((product) => (
                   <Link
                     to={`/product/${product._id}`}
                     key={product._id}
@@ -57,18 +60,18 @@ const UsersProfile = ({ match }) => {
                         />
                       </div>
                       <div className="card-body product--content">
-                        <h3>Exchange with R15 V4</h3>
-                        <p className="card-text text-muted">{product.name}</p>
+                        <h3 className="card-text text-muted">{product.name}</h3>
+                        <h4>Exchange with - {product.exchangeWith}</h4>
                       </div>
 
                       <div className="product--footer">
-                        <small>Today</small>
+                        <small>{format(product.createdAt)}</small>
                       </div>
                     </div>
                   </Link>
-                </div>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>

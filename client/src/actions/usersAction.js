@@ -127,8 +127,6 @@ export const getAllUsers = () => async (dispatch) => {
       type: GETALL_USERS_SUCCESS,
       payload: data,
     });
-
-    localStorage.setItem("userById", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: GETALL_USERS_FAIL,

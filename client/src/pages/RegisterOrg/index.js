@@ -1,30 +1,120 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../../components";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useAlert } from "react-alert";
+import { register, clearErrors } from "../../actions/authActions";
 import { Form } from "react-bootstrap";
 
 const RegisterOrg = ({ history }) => {
+  const dispatch = useDispatch();
+  const alert = useAlert();
+
+  const [user, setUser] = useState({
+    orgname: "",
+    businessType: "",
+    email: "",
+    password: "",
+    address: "",
+    phone: "",
+  });
+
+  const { orgname, businessType, email, password, address, phone } = user;
+
+  const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("/images/no-image.jpg");
+
+  const { isAuthenticated, loading, error } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push("/");
+    }
+
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+  }, [dispatch, alert, isAuthenticated, error, history]);
+
+  const onChange = (e) => {
+    if (e.target.name === "avatar") {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setAvatarPreview(reader.result);
+          setAvatar(reader.result);
+        }
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setUser({ ...user, [e.target.name]: e.target.value });
+    }
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    if (orgname === "") {
+      return alert.error("Enter Organization Name");
+    }
+    if (businessType === "") {
+      return alert.error("Enter Business Type");
+    }
+    if (email === "") {
+      return alert.error("Enter a valid Email");
+    }
+    if (password === "") {
+      return alert.error("Enter Password");
+    }
+    if (address === "") {
+      return alert.error("Enter Address");
+    }
+    if (phone === "") {
+      return alert.error("Enter phone");
+    }
+
+    const formData = new FormData();
+    formData.set("orgname", orgname);
+    formData.set("businessType", businessType);
+    formData.set("email", email);
+    formData.set("password", password);
+    formData.set("address", address);
+    formData.set("phone", phone);
+    formData.set("avatar", avatar);
+
+    dispatch(register(formData));
+  };
 
   return (
     <section className="section container authform">
       <div className="div"></div>
       <h2>Create an Account</h2>
-      <form className="pt-4 formStyle">
+      <form className="pt-4 formStyle" onSubmit={submitHandler}>
         <div class="form-group">
           <label>Organization Name</label>
           <input
             className="form-control"
-            placeholder="Enter Your Organization Name"
+            placeholder="Enter Organization Name"
             type="text"
+            name="orgname"
+            value={orgname}
+            onChange={onChange}
           />
         </div>
         <div class="form-group">
           <label>Business Type</label>
           <input
             className="form-control"
-            placeholder="Enter Your Business Type"
+            placeholder="Enter Business Type"
             type="text"
+            name="businessType"
+            value={businessType}
+            onChange={onChange}
           />
         </div>
         <div className="form-group">
@@ -33,6 +123,9 @@ const RegisterOrg = ({ history }) => {
             className="form-control"
             placeholder="Enter Email"
             type="email"
+            name="email"
+            value={email}
+            onChange={onChange}
           />
         </div>
         <div className="form-group">
@@ -41,6 +134,32 @@ const RegisterOrg = ({ history }) => {
             className="form-control"
             placeholder="Enter Password"
             type="password"
+            name="password"
+            value={password}
+            onChange={onChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Address</label>
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Enter Your Address"
+            name="address"
+            value={address}
+            onChange={onChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Phone</label>
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Phone number"
+            name="phone"
+            value={phone}
+            onChange={onChange}
           />
         </div>
         <Form.Group controlId="formFileLg" className="mb-3">
@@ -61,10 +180,15 @@ const RegisterOrg = ({ history }) => {
               size="lg"
               name="avatar"
               accept="images/*"
+              onChange={onChange}
             />
           </div>
         </Form.Group>
-        <Button type="submit" className="button">
+        <Button
+          disabled={loading ? true : false}
+          type="submit"
+          className={`button mt-3 ${loading ? "disabled" : ""}`}
+        >
           Register
         </Button>
       </form>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
-import { FiHeart } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import {
@@ -12,6 +11,7 @@ import Loader from "../../components/Loader";
 import Pagination from "react-js-pagination";
 import { Banner } from "../../components";
 import { getCategories } from "../../actions/categoryActions";
+import { format } from "timeago.js";
 
 const Home = ({ match }) => {
   const dispatch = useDispatch();
@@ -90,18 +90,14 @@ const Home = ({ match }) => {
                         alt=""
                         className="product--img"
                       />
-                      <FiHeart className="product--saveicon" />
                     </div>
                     <div className="card-body product--content">
-                      <h3>{product.name}</h3>
-                      {/* <p>2006 - 90,000 km</p> */}
-                      <p className="card-text text-muted">
-                        {product.description.slice(0, 30)}...
-                      </p>
+                      <h3 className="card-text text-muted">{product.name}</h3>
+                      <h4>Exchange with - {product.exchangeWith}</h4>
                     </div>
                     <div className="product--footer">
-                      <small>{product.addressOne}</small>
-                      {/* <small>{product.postedAt}</small> */}
+                      <small>{product.user.address.slice(0, 15)}...</small>
+                      <small>{format(product.createdAt)}</small>
                     </div>
                   </div>
                 </Link>

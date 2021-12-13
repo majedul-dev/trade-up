@@ -33,6 +33,18 @@ const productScema = new Schema(
       required: [true, "Name is required"],
       maxlength: [200, "Product name should be including 200 characters"],
     },
+    model: {
+      type: String,
+      required: [true, "Model is required"],
+    },
+    make: {
+      type: Date,
+      required: [true, "Manufacture date is required"],
+    },
+    brand: {
+      type: String,
+      required: [true, "Brand is required"],
+    },
     exchangeWith: {
       type: String,
       required: [true, "Product name is required"],
@@ -67,18 +79,6 @@ const productScema = new Schema(
         },
       },
     ],
-    addressOne: {
-      type: String,
-      required: [true, "Address one is required"],
-    },
-    addressTwo: {
-      type: String,
-      required: [true, "Address two is required"],
-    },
-    phone: {
-      type: String,
-      required: [true, "Phone number is required"],
-    },
     numOffers: {
       type: Number,
       required: true,

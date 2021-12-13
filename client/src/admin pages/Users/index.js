@@ -28,7 +28,7 @@ const Users = () => {
             <thead className="thead-light">
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Username</th>
+                <th scope="col">Username/Org Name</th>
                 <th scope="col">Role</th>
                 <th scope="col">Email</th>
                 <th scope="col">Action</th>
@@ -36,24 +36,34 @@ const Users = () => {
             </thead>
             <tbody>
               {users &&
-                users.map((user) => (
-                  <tr key={user._id}>
-                    <th scope="row">{user._id}</th>
-                    <td>{user.username}</td>
-                    <td>{user.role}</td>
-                    <td>{user.email}</td>
-                    <td>
-                      <Link to={`/users/edit/${user._id}`}>
-                        <button
-                          className="button-sm"
-                          onClick={() => dispatch(getAdminUserById(user._id))}
-                        >
-                          Edit
-                        </button>
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
+                users.map((user, index) => {
+                  let num = index + 1;
+                  function pad(n) {
+                    let string = "" + num;
+                    let pad = "0000";
+                    n = pad.substring(0, pad.length - string.length) + string;
+                    num++;
+                    return n;
+                  }
+                  return (
+                    <tr key={user._id}>
+                      <th scope="row">{pad(index++)}</th>
+                      <td>{user.username ? user.username : user.orgname}</td>
+                      <td>{user.role}</td>
+                      <td>{user.email}</td>
+                      <td>
+                        <Link to={`/users/edit/${user._id}`}>
+                          <button
+                            className="button-sm"
+                            onClick={() => dispatch(getAdminUserById(user._id))}
+                          >
+                            Edit
+                          </button>
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         )}

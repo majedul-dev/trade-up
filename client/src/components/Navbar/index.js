@@ -55,7 +55,7 @@ const Navbar = () => {
                   />
                   <div>
                     <small>Hello</small>
-                    <h3>{user.username}</h3>
+                    <h3>{user.username ? user.username : user.orgname}</h3>
                     <Link to={`/profile/${user._id}`}>
                       View and edit profile
                     </Link>
@@ -102,7 +102,7 @@ const Navbar = () => {
           )}
 
           <button className="navbar__sellbutton">
-            <Link to={isAuthenticated ? "/post" : "/login"}>Exchange</Link>
+            <Link to={isAuthenticated ? "/post" : "/login"}>Post An AD</Link>
           </button>
           <Link to={isAuthenticated ? "/chat" : "/login"}>
             <BsChat className="chatIcon" />

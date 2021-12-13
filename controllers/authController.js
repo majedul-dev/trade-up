@@ -20,7 +20,8 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     width: 150,
     crop: "scale",
   });
-  const { username, email, password } = req.body;
+  const { username, orgname, businessType, email, password, address, phone } =
+    req.body;
 
   const existUser = await User.findOne({ email });
 
@@ -30,8 +31,12 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 
   const user = await User.create({
     username,
+    orgname,
+    businessType,
     email,
     password,
+    address,
+    phone,
     avatar: result.secure_url,
   });
 
